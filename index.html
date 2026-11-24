@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Page</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .container {
+      background: white;
+      padding: 35px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #667eea;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #5365c7;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Sign Up</h2>
+
+    <form id="signupForm">
+      <input type="text" id="name"
+        placeholder="Enter your name" required>
+
+      <input type="email" id="email"
+        placeholder="Enter your email" required>
+
+      <input type="password" id="password"
+        placeholder="Enter your password" required>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("signupForm");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Get input values
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Create user object
+      const user = {
+        name: name,
+        email: email,
+        password: password
+      };
+
+      // Get existing users
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check duplicate email
+      const exists = users.some(user => user.email === email);
+
+      if (exists) {
+        document.getElementById("message").style.color = "red";
+        document.getElementById("message").innerText =
+          "Email already registered!";
+        return;
+      }
+
+      // Save user in localStorage
+      users.push(user);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("message").style.color = "green";
+      document.getElementById("message").innerText =
+        "Signup successful!";
+
+      form.reset();
+
+      console.log("Saved Users:", users);
+    });
+  </script>
+
+</body>
+</html>
